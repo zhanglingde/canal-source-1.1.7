@@ -7,7 +7,7 @@ spring:
     default-property-inclusion: non_null
 
 canal.conf:
-  mode: tcp #tcp kafka rocketMQ rabbitMQ
+  mode: rocketMQ #tcp kafka rocketMQ rabbitMQ
   flatMessage: true
   zookeeperHosts:
   syncBatchSize: 1000
@@ -17,46 +17,51 @@ canal.conf:
   secretKey:
   consumerProperties:
     # canal tcp consumer
-    canal.tcp.server.host: 127.0.0.1:11111
-    canal.tcp.zookeeper.hosts:
-    canal.tcp.batch.size: 500
-    canal.tcp.username:
-    canal.tcp.password:
+#    canal.tcp.server.host: 127.0.0.1:11111
+#    canal.tcp.zookeeper.hosts:
+#    canal.tcp.batch.size: 500
+#    canal.tcp.username:
+#    canal.tcp.password:
     # kafka consumer
-    kafka.bootstrap.servers: 127.0.0.1:9092
-    kafka.enable.auto.commit: false
-    kafka.auto.commit.interval.ms: 1000
-    kafka.auto.offset.reset: latest
-    kafka.request.timeout.ms: 40000
-    kafka.session.timeout.ms: 30000
-    kafka.isolation.level: read_committed
-    kafka.max.poll.records: 1000
+#    kafka.bootstrap.servers: 127.0.0.1:9092
+#    kafka.enable.auto.commit: false
+#    kafka.auto.commit.interval.ms: 1000
+#    kafka.auto.offset.reset: latest
+#    kafka.request.timeout.ms: 40000
+#    kafka.session.timeout.ms: 30000
+#    kafka.isolation.level: read_committed
+#    kafka.max.poll.records: 1000
     # rocketMQ consumer
     rocketmq.namespace:
-    rocketmq.namesrv.addr: 127.0.0.1:9876
+    rocketmq.namesrv.addr: 192.168.65.130:9876
     rocketmq.batch.size: 1000
     rocketmq.enable.message.trace: false
     rocketmq.customized.trace.topic:
     rocketmq.access.channel:
     rocketmq.subscribe.filter:
     # rabbitMQ consumer
-    rabbitmq.host:
-    rabbitmq.virtual.host:
-    rabbitmq.username:
-    rabbitmq.password:
-    rabbitmq.resource.ownerId:
+#    rabbitmq.host:
+#    rabbitmq.virtual.host:
+#    rabbitmq.username:
+#    rabbitmq.password:
+#    rabbitmq.resource.ownerId:
 
-#  srcDataSources:
-#    defaultDS:
-#      url: jdbc:mysql://127.0.0.1:3306/mytest?useUnicode=true
-#      username: root
-#      password: 121212
+  srcDataSources:
+    defaultDS:
+      url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true
+      username: root
+      password: root
   canalAdapters:
   - instance: example # canal instance Name or mq topic name
     groups:
     - groupId: g1
       outerAdapters:
-      - name: logger
+        - name: es7
+          hosts: http://192.168.65.130:9200
+          properties:
+            mode: rest # transport or rest
+            security.auth: canal:canal #  only used for rest mode
+            cluster.name: ling-es
 #      - name: rdb
 #        key: mysql1
 #        properties:
@@ -87,12 +92,7 @@ canal.conf:
 #          hbase.zookeeper.quorum: 127.0.0.1
 #          hbase.zookeeper.property.clientPort: 2181
 #          zookeeper.znode.parent: /hbase
-#      - name: es
-#        hosts: 127.0.0.1:9300 # 127.0.0.1:9200 for rest mode
-#        properties:
-#          mode: transport # or rest
-#          # security.auth: test:123456 #  only used for rest mode
-#          cluster.name: elasticsearch
+
 #      - name: kudu
 #        key: kudu
 #        properties:
