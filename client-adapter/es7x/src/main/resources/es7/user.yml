@@ -1,14 +1,14 @@
-dataSourceKey: defaultDS
-destination: example
-groupId: g1
+dataSourceKey: defaultDS  # 源数据源的 key,对应上面配置的 srcDataSources 中的值
+destination: test_user      # canal的 instance?或者 Mg 的 topic（rocketMQ 使用 topic）
+groupId: g1               # 对应MQ模式下的 groupId,只会同步对应 groupId 的数据
 esMapping:
-  _index: user
-  _id: _id
+  _index: user            # es的索名称
+  _id: _id                # es的id,如果不配置该项必须配置下面的pk项id则会由es自动分配
 #  upsert: true
 #  pk: id
   sql: "select user_id as _id, user_name,user_age,user_pwd
         from user"
 #  objFields:
 #    _labels: array:;
-  etlCondition: "where created_at >={}"
-  commitBatch: 3000
+  etlCondition: "where created_at >={}"   # etL的条件参数
+  commitBatch: 3000       # 提交批大小

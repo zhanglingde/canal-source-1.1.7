@@ -52,7 +52,7 @@ canal.conf:
       username: root
       password: root
   canalAdapters:
-  - instance: example # canal instance Name or mq topic name
+  - instance: test_user # canal instance Name or mq topic name
     groups:
     - groupId: g1
       outerAdapters:
@@ -60,8 +60,18 @@ canal.conf:
           hosts: http://192.168.65.130:9200
           properties:
             mode: rest # transport or rest
-            security.auth: canal:canal #  only used for rest mode
+            security.auth: canal:canal #  only used for rest mode(rest 模式需要该配置)
             cluster.name: ling-es
+  - instance: test_employee # canal instance Name or mq topic name
+    groups:
+      - groupId: g1
+        outerAdapters:
+          - name: es7
+            hosts: http://192.168.65.130:9200
+            properties:
+              mode: rest # transport or rest
+              security.auth: canal:canal #  only used for rest mode(rest 模式需要该配置)
+              cluster.name: ling-es
 #      - name: rdb
 #        key: mysql1
 #        properties:

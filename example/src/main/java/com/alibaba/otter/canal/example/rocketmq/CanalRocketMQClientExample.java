@@ -13,6 +13,8 @@ import com.alibaba.otter.canal.protocol.Message;
 /**
  * RocketMQ client example
  *
+ * protobuf 消息消费
+ *
  * @author machengyuan @ 2018-6-12
  * @version 1.0.0
  */
