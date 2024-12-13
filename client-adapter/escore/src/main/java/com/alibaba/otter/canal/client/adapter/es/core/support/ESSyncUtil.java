@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -74,6 +75,8 @@ public class ESSyncUtil {
             case "long":
                 if (val instanceof Number) {
                     res = ((Number) val).longValue();
+                } else if (val instanceof Timestamp) {
+                    res = ((Timestamp) val).getTime();
                 } else {
                     res = Long.parseLong(val.toString());
                 }

@@ -127,8 +127,9 @@ public class CanalRocketMQConsumer implements CanalMsgConsumer {
                 context.setAutoCommit(true);
                 boolean isSuccess = process(messageExts);
                 if (isSuccess) {
-                    return ConsumeOrderlyStatus.SUCCESS;
+                    return ConsumeOrderlyStatus.SUCCESS;  // 有序消息消费成功
                 } else {
+                    // 暂停当前队列一段时间，之后继续尝试消费这条消息（默认 5s 左右）
                     return ConsumeOrderlyStatus.SUSPEND_CURRENT_QUEUE_A_MOMENT;
                 }
             });

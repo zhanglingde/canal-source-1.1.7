@@ -62,25 +62,26 @@ canal.conf:
             mode: rest # transport or rest
             security.auth: canal:canal #  only used for rest mode(rest 模式需要该配置)
             cluster.name: ling-es
-  - instance: test_employee # canal instance Name or mq topic name
+  - instance: cloud-ar2_invoice_vat # canal instance Name or mq topic name
     groups:
       - groupId: g1
         outerAdapters:
           - name: es7
+            key: invoice_vat
             hosts: http://192.168.65.130:9200
             properties:
               mode: rest # transport or rest
               security.auth: canal:canal #  only used for rest mode(rest 模式需要该配置)
               cluster.name: ling-es
-#      - name: rdb
-#        key: mysql1
-#        properties:
-#          jdbc.driverClassName: com.mysql.jdbc.Driver
-#          jdbc.url: jdbc:mysql://127.0.0.1:3306/mytest2?useUnicode=true
-#          jdbc.username: root
-#          jdbc.password: 121212
-#          druid.stat.enable: false
-#          druid.stat.slowSqlMillis: 1000
+#          - name: rdb
+#            key: mysql1
+#            properties:
+#              jdbc.driverClassName: com.mysql.jdbc.Driver
+#              jdbc.url: jdbc:mysql://127.0.0.1:3306/vhr?useUnicode=true
+#              jdbc.username: root
+#              jdbc.password: root
+#              druid.stat.enable: false
+#              druid.stat.slowSqlMillis: 1000
 #      - name: rdb
 #        key: oracle1
 #        properties:
