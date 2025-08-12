@@ -73,11 +73,11 @@ public class ExtensionLoader<T> {
         if (!type.isInterface()) {
             throw new IllegalArgumentException("Extension type(" + type + ") is not interface!");
         }
-        if (!withExtensionAnnotation(type)) {
+        if (!withExtensionAnnotation(type)) {  // 判断类是否带有 SPI 注解
             throw new IllegalArgumentException("Extension type(" + type + ") is not extension, because WITHOUT @"
                                                + SPI.class.getSimpleName() + " Annotation!");
         }
-
+        // 先从缓存中扩展加载器，如果没有则创建 ExtensionLoader 实例
         ExtensionLoader<T> loader = (ExtensionLoader<T>) EXTENSION_LOADERS.get(type);
         if (loader == null) {
             EXTENSION_LOADERS.putIfAbsent(type, new ExtensionLoader<T>(type, classLoaderPolicy));

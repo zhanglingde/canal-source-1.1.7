@@ -48,7 +48,10 @@ public class PropertyPlaceholderConfigurer extends org.springframework.beans.fac
                 locationNames[i] = resolveSystemPropertyPlaceholders(locationNames[i]);
             }
         }
+        // locationNames  里两个值：classpath:canal.properties 和 classpath:example/instance.properties(
+        // example为传入参数替换的， placeholder为canal.instance.destination 加载配置文件里参数)
 
+        //  首先加载file.instance.xml 里的方法，can.instance， 加载数据库，然后加载mybatis
         if (locationNames != null) {
             List<Resource> resources = new ArrayList<>(locationNames.length);
 

@@ -52,7 +52,7 @@ canal.conf:
       username: root
       password: root
   canalAdapters:
-  - instance: test_user # canal instance Name or mq topic name
+  - instance: test_user # canal instance Name or mq topic name 此处是 MQ TOPIC 的名字
     groups:
     - groupId: g1
       outerAdapters:

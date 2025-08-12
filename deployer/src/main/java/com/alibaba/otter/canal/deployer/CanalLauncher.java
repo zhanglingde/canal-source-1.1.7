@@ -42,16 +42,17 @@ public class CanalLauncher {
             logger.info("## load canal configurations");
             String conf = System.getProperty("canal.conf", "classpath:canal.properties");
             Properties properties = new Properties();
-            if (conf.startsWith(CLASSPATH_URL_PREFIX)) {
+            if (conf.startsWith(CLASSPATH_URL_PREFIX)) {       // 配置文件名校验
                 conf = StringUtils.substringAfter(conf, CLASSPATH_URL_PREFIX);
                 properties.load(CanalLauncher.class.getClassLoader().getResourceAsStream(conf));
             } else {
+                // 把配置文件canal.properties的配置加载到properties
                 properties.load(new FileInputStream(conf));
             }
-
+            // new 对象，加载其构造方法
             final CanalStarter canalStater = new CanalStarter(properties);
             String managerAddress = CanalController.getProperty(properties, CanalConstants.CANAL_ADMIN_MANAGER);
-            if (StringUtils.isNotEmpty(managerAddress)) {
+            if (StringUtils.isNotEmpty(managerAddress)) { // 获取监听远程配置 admin.manager
                 String user = CanalController.getProperty(properties, CanalConstants.CANAL_ADMIN_USER);
                 String passwd = CanalController.getProperty(properties, CanalConstants.CANAL_ADMIN_PASSWD);
                 String adminPort = CanalController.getProperty(properties, CanalConstants.CANAL_ADMIN_PORT, "11110");

@@ -88,7 +88,7 @@ public class ServerRunningMonitor extends AbstractCanalLifeCycle {
     public synchronized void start() {
         super.start();
         try {
-            processStart();
+            processStart();  // 1. zk 启动，本地启动则该方法没有内容，调用 processActiveEnter
             if (zkClient != null) {
                 delayExecutor = Executors.newScheduledThreadPool(1);
                 // 如果需要尽可能释放instance资源，不需要监听running节点，不然即使stop了这台机器，另一台机器立马会start
@@ -97,7 +97,7 @@ public class ServerRunningMonitor extends AbstractCanalLifeCycle {
 
                 initRunning();
             } else {
-                processActiveEnter();// 没有zk，直接启动
+                processActiveEnter(); // 没有zk，直接启动
             }
         } catch (Exception e) {
             logger.error("start failed", e);

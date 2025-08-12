@@ -75,6 +75,7 @@ public class AbstractCanalInstance extends AbstractCanalLifeCycle implements Can
     @Override
     public void start() {
         super.start();
+        // 各个线程启动对应不同模块
         if (!metaManager.isStart()) {
             metaManager.start();
         }

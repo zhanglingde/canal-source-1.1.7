@@ -127,6 +127,8 @@ public class CanalServerWithEmbedded extends AbstractCanalLifeCycle implements C
     }
 
     public void start(final String destination) {
+        // Map 初始化的时候为空，调用 get 的时候才构建(Map 中存储的的函数方法)
+        // CanalController#initGlobalConfig 方法中定义函数 canalInstanceGenerator.generate(destination)
         final CanalInstance canalInstance = canalInstances.get(destination);
         if (!canalInstance.isStart()) {
             try {
@@ -134,6 +136,7 @@ public class CanalServerWithEmbedded extends AbstractCanalLifeCycle implements C
                 if (metrics.isRunning()) {
                     metrics.register(canalInstance);
                 }
+                // CanalInstanceWithSpring#start()
                 canalInstance.start();
                 logger.info("start CanalInstances[{}] successfully", destination);
             } finally {

@@ -62,8 +62,10 @@ public class CanalStarter {
      * @throws Throwable
      */
     public synchronized void start() throws Throwable {
+        // 1. 服务模式（tcp、mq）
         String serverMode = CanalController.getProperty(properties, CanalConstants.CANAL_SERVER_MODE);
         if (!"tcp".equalsIgnoreCase(serverMode)) {
+            // mq 模式时使用 SPI 加载生产者
             ExtensionLoader<CanalMQProducer> loader = ExtensionLoader.getExtensionLoader(CanalMQProducer.class);
             canalMQProducer = loader.getExtension(serverMode.toLowerCase(), CONNECTOR_SPI_DIR, CONNECTOR_STANDBY_SPI_DIR);
             if (canalMQProducer != null) {
@@ -81,7 +83,7 @@ public class CanalStarter {
                 System.setProperty("canal.instance.memory.rawEntry", "false");
             }
         }
-
+        // 2. CanalController 启动服务
         logger.info("## start the canal server.");
         controller = new CanalController(properties);
         controller.start();

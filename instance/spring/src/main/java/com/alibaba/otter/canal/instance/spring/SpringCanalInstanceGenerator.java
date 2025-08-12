@@ -28,11 +28,12 @@ public class SpringCanalInstanceGenerator implements CanalInstanceGenerator {
                 // 设置当前正在加载的通道，加载spring查找文件时会用到该变量
                 System.setProperty("canal.instance.destination", destination);
                 this.beanFactory = getBeanFactory(springXml);
+                // 加载 name = instance 的类
                 String beanName = destination;
                 if (!beanFactory.containsBean(beanName)) {
                     beanName = defaultName;
                 }
-
+                // PropertyPlaceholderConfigurer#afterPropertiesSet
                 return (CanalInstance) beanFactory.getBean(beanName);
             } catch (Throwable e) {
                 logger.error("generator instance failed.", e);
