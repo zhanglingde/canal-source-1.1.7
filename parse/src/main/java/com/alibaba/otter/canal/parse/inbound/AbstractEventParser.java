@@ -160,14 +160,14 @@ public abstract class AbstractEventParser<EVENT> extends AbstractCanalLifeCycle 
                 boolean isMariaDB = false;
                 while (running) {
                     try {
-                        // 开始执行replication
-                        // 1. 构造Erosa连接
+                        // 开始执行 replication
+                        // 1. 构造 Erosa 连接
                         erosaConnection = buildErosaConnection();
 
                         // 2. 启动一个心跳线程
                         startHeartBeat(erosaConnection);
 
-                        // 3. 执行dump前的准备工作
+                        // 3. 执行 dump 前的准备工作
                         preDump(erosaConnection);
 
                         erosaConnection.connect();// 链接

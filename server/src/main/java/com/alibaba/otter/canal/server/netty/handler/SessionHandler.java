@@ -50,6 +50,9 @@ public class SessionHandler extends SimpleChannelHandler {
         this.embeddedServer = embeddedServer;
     }
 
+    /**
+     * 收到客户端请求
+     */
     @SuppressWarnings({ "deprecation" })
     public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
         logger.info("message receives in session handler...");
@@ -59,7 +62,7 @@ public class SessionHandler extends SimpleChannelHandler {
         ClientIdentity clientIdentity = null;
         try {
             switch (packet.getType()) {
-                case SUBSCRIPTION:
+                case SUBSCRIPTION:  // 订阅请求
                     Sub sub = Sub.parseFrom(packet.getBody());
                     if (StringUtils.isNotEmpty(sub.getDestination()) && StringUtils.isNotEmpty(sub.getClientId())) {
                         clientIdentity = new ClientIdentity(sub.getDestination(),
@@ -96,7 +99,7 @@ public class SessionHandler extends SimpleChannelHandler {
                                 (short) 401));
                     }
                     break;
-                case UNSUBSCRIPTION:
+                case UNSUBSCRIPTION:  // 取消订阅请求
                     Unsub unsub = Unsub.parseFrom(packet.getBody());
                     if (StringUtils.isNotEmpty(unsub.getDestination()) && StringUtils.isNotEmpty(unsub.getClientId())) {
                         clientIdentity = new ClientIdentity(unsub.getDestination(),
@@ -126,7 +129,7 @@ public class SessionHandler extends SimpleChannelHandler {
                                 (short) 401));
                     }
                     break;
-                case GET:
+                case GET:    //获取binlog请求
                     Get get = CanalPacket.Get.parseFrom(packet.getBody());
                     if (StringUtils.isNotEmpty(get.getDestination()) && StringUtils.isNotEmpty(get.getClientId())) {
                         clientIdentity = new ClientIdentity(get.getDestination(), Short.valueOf(get.getClientId()));
@@ -143,7 +146,7 @@ public class SessionHandler extends SimpleChannelHandler {
                         // get.getFetchSize(), get.getTimeout(), unit);
                         // }
                         // } else {
-                        if (get.getTimeout() == -1) {// 是否是初始值
+                        if (get.getTimeout() == -1) {// 是否是初始值  ,根据客户端是否指定了请求超时时间调用embeddedServer不同方法获取binlog
                             message = embeddedServer.getWithoutAck(clientIdentity, get.getFetchSize());
                         } else {
                             TimeUnit unit = convertTimeUnit(get.getUnit());
@@ -247,7 +250,7 @@ public class SessionHandler extends SimpleChannelHandler {
                                 (short) 401));
                     }
                     break;
-                case CLIENTACK:
+                case CLIENTACK:    // 客户端消费成功ack请求
                     ClientAck ack = CanalPacket.ClientAck.parseFrom(packet.getBody());
                     MDC.put("destination", ack.getDestination());
                     if (StringUtils.isNotEmpty(ack.getDestination()) && StringUtils.isNotEmpty(ack.getClientId())) {
@@ -286,7 +289,7 @@ public class SessionHandler extends SimpleChannelHandler {
                                 (short) 401));
                     }
                     break;
-                case CLIENTROLLBACK:
+                case CLIENTROLLBACK:    // 客户端消费失败回滚请求
                     ClientRollback rollback = CanalPacket.ClientRollback.parseFrom(packet.getBody());
                     MDC.put("destination", rollback.getDestination());
                     if (StringUtils.isNotEmpty(rollback.getDestination())
@@ -317,7 +320,7 @@ public class SessionHandler extends SimpleChannelHandler {
                                 (short) 401));
                     }
                     break;
-                default:
+                default:    // 无法判断请求类型
                     byte[] errorBytes = NettyUtils.errorPacket(400,
                         MessageFormatter.format("packet type={} is NOT supported!", packet.getType()).getMessage());
                     NettyUtils.write(ctx.getChannel(), errorBytes, new ChannelFutureAggregator(ctx.getChannel()
