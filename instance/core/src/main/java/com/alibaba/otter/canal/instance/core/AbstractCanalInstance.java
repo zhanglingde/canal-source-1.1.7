@@ -75,7 +75,7 @@ public class AbstractCanalInstance extends AbstractCanalLifeCycle implements Can
     @Override
     public void start() {
         super.start();
-        // 各个线程启动对应不同模块
+        // 各个线程启动对应不同模块 元数据存储管理：本地对应 FileMixedMetaManager,zk对应ZooKeeperMetaManager
         if (!metaManager.isStart()) {
             metaManager.start();
         }
@@ -83,7 +83,7 @@ public class AbstractCanalInstance extends AbstractCanalLifeCycle implements Can
         if (!alarmHandler.isStart()) {
             alarmHandler.start();
         }
-
+        //
         if (!eventStore.isStart()) {
             eventStore.start();
         }
@@ -91,7 +91,7 @@ public class AbstractCanalInstance extends AbstractCanalLifeCycle implements Can
         if (!eventSink.isStart()) {
             eventSink.start();
         }
-
+        // 寻找binlog
         if (!eventParser.isStart()) {
             beforeStartEventParser(eventParser);
             eventParser.start();

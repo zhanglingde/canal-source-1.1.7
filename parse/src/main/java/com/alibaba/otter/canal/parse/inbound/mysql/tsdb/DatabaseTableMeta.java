@@ -41,7 +41,7 @@ import com.alibaba.otter.canal.parse.inbound.mysql.tsdb.dao.MetaSnapshotDO;
 import com.alibaba.otter.canal.protocol.position.EntryPosition;
 
 /**
- * 基于db远程管理 see internal class: CanalTableMeta , ConsoleTableMetaTSDB
+ * 基于db远程管理 see internal class: CanalTableMeta , ConsoleTableMetaTSDB(使用 h2 数据库)
  *
  * @author agapple 2017年7月27日 下午10:47:55
  * @since 3.2.5
@@ -186,7 +186,7 @@ public class DatabaseTableMeta implements TableMetaTSDB {
     }
 
     /**
-     * 初始化的时候dump一下表结构
+     * 初始化的时候dump一下表结构(过滤出需要同步的表)
      */
     private boolean dumpTableMeta(MysqlConnection connection, final CanalEventFilter filter) {
         try {

@@ -151,7 +151,7 @@ public abstract class AbstractEventParser<EVENT> extends AbstractCanalLifeCycle 
         // 构造bin log parser
         binlogParser = buildParser();// 初始化一下BinLogParser
         binlogParser.start();
-        // 启动工作线程
+        // 启动解析线程
         parseThread = new Thread(new Runnable() {
 
             public void run() {
