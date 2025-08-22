@@ -51,6 +51,10 @@ canal.conf:
       url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true
       username: root
       password: root
+    lingDS:
+      url: jdbc:mysql://127.0.0.1:3306/ling?useUnicode=true
+      username: root
+      password: root
   canalAdapters:
   - instance: test_user # canal instance Name or mq topic name 此处是 MQ TOPIC 的名字
     groups:
@@ -62,6 +66,16 @@ canal.conf:
             mode: rest # transport or rest
             security.auth: canal:canal #  only used for rest mode(rest 模式需要该配置)
             cluster.name: ling-es
+  - instance: ling_book # canal instance Name or mq topic name 此处是 MQ TOPIC 的名字
+    groups:
+      - groupId: g1
+        outerAdapters:
+          - name: es7
+            hosts: http://192.168.65.130:9200
+            properties:
+              mode: rest # transport or rest
+              security.auth: canal:canal #  only used for rest mode(rest 模式需要该配置)
+              cluster.name: ling-es
   - instance: cloud-ar2_invoice_vat # canal instance Name or mq topic name
     groups:
       - groupId: g1

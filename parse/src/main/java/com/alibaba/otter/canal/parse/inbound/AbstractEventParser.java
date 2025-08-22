@@ -251,9 +251,9 @@ public abstract class AbstractEventParser<EVENT> extends AbstractCanalLifeCycle 
                             } else {
                                 multiStageCoprocessor.start();
                                 if (StringUtils.isEmpty(startPosition.getJournalName())
-                                    && startPosition.getTimestamp() != null) {
+                                    && startPosition.getTimestamp() != null) {    // 时间戳模式
                                     erosaConnection.dump(startPosition.getTimestamp(), multiStageCoprocessor);
-                                } else {
+                                } else {   // 文件 + 位点模式
                                     erosaConnection.dump(startPosition.getJournalName(),
                                         startPosition.getPosition(),
                                         multiStageCoprocessor);

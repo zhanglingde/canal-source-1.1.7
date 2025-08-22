@@ -86,7 +86,7 @@ public class MysqlMultiStageCoprocessor extends AbstractCanalLifeCycle implement
         int tc = parserThreadCount > 0 ? parserThreadCount : 1;
         this.parserExecutor = Executors.newFixedThreadPool(tc, new NamedThreadFactory("MultiStageCoprocessor-Parser-"
                                                                                       + destination));
-
+        // 专门用于处理除DML解析之外的其他阶段任务(用于执行 Canal 解析流程中第二阶段和第四阶段处理任务)
         this.stageExecutor = Executors.newFixedThreadPool(2, new NamedThreadFactory("MultiStageCoprocessor-other-"
                                                                                     + destination));
         SequenceBarrier sequenceBarrier = disruptorMsgBuffer.newBarrier();
