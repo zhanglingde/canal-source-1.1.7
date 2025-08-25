@@ -246,9 +246,9 @@ public class MysqlConnection implements ErosaConnection {
             fetcher.start(connector.getChannel());
             while (fetcher.fetch()) {
                 accumulateReceivedBytes(fetcher.limit());
-                LogBuffer buffer = fetcher.duplicate();
+                LogBuffer buffer = fetcher.duplicate();   // 拉取 binlog 存储在 LogBuffer 中
                 fetcher.consume(fetcher.limit());
-                if (!coprocessor.publish(buffer)) {
+                if (!coprocessor.publish(buffer)) {   // 发送消息
                     break;
                 }
             }
@@ -544,7 +544,7 @@ public class MysqlConnection implements ErosaConnection {
     private void loadBinlogChecksum() {
         ResultSetPacket rs = null;
         try {
-            rs = query("select @@global.binlog_checksum");
+            rs = query("select @@global.binlog_checksum");  // 查询返回 CRC32
             List<String> columnValues = rs.getFieldValues();
             if (columnValues != null && columnValues.size() >= 1 && columnValues.get(0) != null
                 && columnValues.get(0).toUpperCase().equals("CRC32")) {

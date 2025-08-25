@@ -71,13 +71,13 @@ public class FailbackLogPositionManager extends AbstractLogPositionManager {
     @Override
     public void persistLogPosition(String destination, LogPosition logPosition) throws CanalParseException {
         try {
-            primary.persistLogPosition(destination, logPosition);
+            primary.persistLogPosition(destination, logPosition);    // 存到内存中
         } catch (CanalParseException e) {
             logger.warn("persistLogPosition use primary log position manager exception. destination: {}, logPosition: {}",
                 destination,
                 logPosition,
                 e);
-            secondary.persistLogPosition(destination, logPosition);
+            secondary.persistLogPosition(destination, logPosition);  // 存到 meta 文件中
         }
     }
 }

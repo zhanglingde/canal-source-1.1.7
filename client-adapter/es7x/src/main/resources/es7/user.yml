@@ -6,9 +6,9 @@ esMapping:
   _id: _id                # es的id,如果不配置该项必须配置下面的pk项id则会由es自动分配
 #  upsert: true
 #  pk: id
-  sql: "select user_id as _id, user_name,user_age,user_pwd
-        from user"
+  sql: "select a.user_id as _id, a.user_name,a.user_age,a.user_pwd
+        from user a"
 #  objFields:
 #    _labels: array:;
-  etlCondition: "where created_at >={}"   # etL的条件参数
+  etlCondition: "where a.created_at >={}"   # etL的条件参数
   commitBatch: 3000       # 提交批大小

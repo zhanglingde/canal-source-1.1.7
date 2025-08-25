@@ -251,6 +251,7 @@ public class MysqlMultiStageCoprocessor extends AbstractCanalLifeCycle implement
 
         public void onEvent(MessageEvent event, long sequence, boolean endOfBatch) throws Exception {
             try {
+                // 1. 将原始 binlog 解码为 LogEvent 对象
                 LogEvent logEvent = event.getEvent();
                 if (logEvent == null) {
                     LogBuffer buffer = event.getBuffer();
@@ -273,6 +274,7 @@ public class MysqlMultiStageCoprocessor extends AbstractCanalLifeCycle implement
                     event.setIterateEvents(deLogEvents);
                     event.setIterateTables(tableMetas);
                 } else {
+                    // 2. SELECT|INSERT|UPDATE|DELETE 事件，根据配置判断是否需要过滤，不需要过滤则将 needDmlParse 设置为 true,第三阶段根据该标志解析
                     TableMeta table = processEvent(logEvent, event);
                     event.setTable(table);
                 }

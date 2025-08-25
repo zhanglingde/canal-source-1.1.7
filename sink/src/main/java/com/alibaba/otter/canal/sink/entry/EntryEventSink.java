@@ -120,7 +120,7 @@ public class EntryEventSink extends AbstractCanalEventSink<List<CanalEntry.Entry
         }
 
         if (hasRowData || hasHeartBeat) {
-            // 存在row记录 或者 存在heartbeat记录，直接跳给后续处理
+            // 存在row记录 或者 存在heartbeat记录，直接跳给后续处理(有三条记录：BEGIN，ROWDATA，END)
             return doSink(events);
         } else {
             // 需要过滤的数据
